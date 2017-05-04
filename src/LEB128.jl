@@ -26,6 +26,10 @@ module LEB128
 
 export encode, decodesigned, decodeunsigned, decode
 
+if Base.VERSION < v"0.6-"
+  xor(a,b) = a $ b
+end
+
 const version = v"0.0.1"
 
 function encode{T<:Unsigned,N}(input::Array{T,N})
@@ -52,9 +56,9 @@ end
 
 encode{T<:Unsigned}(n::T) = encode([n])
 
-encode{T<:Signed}(n::T) = encode(unsigned(n << 1 $ n >> (8*sizeof(T)-1)))
+encode{T<:Signed}(n::T) = encode(unsigned(xor(n << 1, n >> (8*sizeof(T)-1))))
 
-encode{T<:Signed,N}(input::Array{T,N}) = encode(map(n -> unsigned((n << 1) $ (n >> 63)), input))
+encode{T<:Signed,N}(input::Array{T,N}) = encode(map(n -> unsigned(xor(n << 1, n >> 63)), input))
 
 function decodeunsigned(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=0)
   # Decode unsigned integer using LEB128
@@ -87,7 +91,7 @@ end
 function decodesigned(input::Array{UInt8,1}, dtype::DataType=Int64, outsize::Integer=0)
   n = decodeunsigned(input, dtype, outsize)
   # undo zigzag encoding to retrieve the sign
-  return map(x -> dtype((x >>> 1) $ -(x & 1)), n)
+  return map(x -> dtype(xor(x >>> 1, -(x & 1))), n)
 end
 
 function decode(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=0)
@@ -95,7 +99,7 @@ function decode(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=
   if dtype <: Signed
     udtype = udtypes[sizeof(dtype)]
     n = decodeunsigned(input, udtype, outsize)
-    return map(x -> signed((x >>> 1) $ -(x & 1)), n)
+    return map(x -> signed(xor(x >>> 1, -(x & 1))), n)
   else
     n = decodeunsigned(input, dtype, outsize)
     return map(dtype, n)
