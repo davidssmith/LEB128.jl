@@ -1,5 +1,8 @@
 # LEB128.jl
 
+[![Build
+Status](https://travis-ci.org/davidssmith/LEB128.jl.svg?branch=master)](https://travis-ci.org/davidssmith/LEB128.jl)
+
 Little Endian Base 128 (LEB128) encoding and decoding module for the Julia programming language
 
 ## Introduction
