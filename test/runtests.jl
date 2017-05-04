@@ -1,7 +1,7 @@
 # test file for LEB128.jl
 using Base.Test
 
-include("../src/leb128.jl")
+include("../src/LEB128.jl")
 
 println("Testing LEB128 encoding and decoding.")
 
