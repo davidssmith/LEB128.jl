@@ -26,6 +26,8 @@ module LEB128
 
 export encode, decodesigned, decodeunsigned, decode
 
+const version = v"0.0.1"
+
 function encode{T<:Unsigned,N}(input::Array{T,N})
   # Encode array of unsigned integers using LEB128
   maxbytes = ceil(Int, 8*sizeof(T)/ 7)
