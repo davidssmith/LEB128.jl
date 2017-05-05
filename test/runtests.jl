@@ -12,6 +12,8 @@ print("Known results ... ")
 @test LEB128.encode(0) == UInt8[0x00]
 @test LEB128.encode(2147483647) == UInt8[0xfe,0xff,0xff,0xff,0x0f]
 @test LEB128.encode(-2147483647) == UInt8[0xfd,0xff,0xff,0xff,0x0f]
+@test LEB128.decodesigned(LEB128.encode(-2147483647)) == [-2147483647]
+@test LEB128.decode(UInt8(0x01)) == [0x01]
 println("PASS")
 
 println("Type min and max ...")
