@@ -73,6 +73,15 @@ Note that the encoded array is 1-D because the length of each encoded element is
 
 Also notice that the final decode command assumed that the output is unsigned, so it produced incorrect output. If you have encoded signed data that you wish to decode, then you need to call `decodesigned` or `decode(::Array{UInt8,1}, ::DataType)` with an appropriate signed data type passed in the second argument.
 
-## Help
+## Getting Help
 
-For help or issues, file an Issue on GitHub.
+For help, file an issue on the bug tracker or email one of the authors. Third
+party help is welcome and can be contributed through pull requests.
+
+## Authors
+
+David S. Smith, Dong Wang
+
+## Disclaimer
+
+This code comes with no warranty. Use at your own risk. 
