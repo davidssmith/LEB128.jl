@@ -1,11 +1,10 @@
-# LEB128.jl
+# LittleEndianBase128.jl
 
 [![Build
-Status](https://travis-ci.org/davidssmith/LEB128.jl.svg?branch=master)](https://travis-ci.org/davidssmith/LEB128.jl)
+Status](https://travis-ci.org/davidssmith/LittleEndianBase128.jl.svg?branch=master)](https://travis-ci.org/davidssmith/LittleEndianBase128.jl)
 [![Build
 status](https://ci.appveyor.com/api/projects/status/cl5rx41s7agopqmb?svg=true)](https://ci.appveyor.com/project/davidssmith/leb128-jl)
-[![Coverage
-Status](https://coveralls.io/repos/github/davidssmith/LEB128.jl/badge.svg?branch=master)](https://coveralls.io/github/davidssmith/LEB128.jl?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/davidssmith/LittleEndianBase128.jl/badge.svg?branch=master)](https://coveralls.io/github/davidssmith/LittleEndianBase128.jl?branch=master)
 
 
 Little Endian Base 128 (LEB128) encoding and decoding module for the Julia programming language
@@ -20,14 +19,14 @@ encoded value is unsigned LEB128 or signed LEB128.
 
 At the Julia prompt, type:
 ```
-julia> Pkg.add("LEB128")
+julia> Pkg.add("LittleEndianBase128")
 ```
 
 
 ## Example
 
 ```
-julia> using LEB128
+julia> using LittleEndianBase128
 
 julia> x = rand(-100:100, 3, 3)
 3×3 Array{Int64,2}:

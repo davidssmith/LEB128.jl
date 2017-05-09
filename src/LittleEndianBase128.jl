@@ -1,4 +1,5 @@
-# This file is part of the LEB128 package (http://github.com/davidssmith/LEB128.jl).
+# This file is part of the LittleEndianBase128 package
+# (http://github.com/davidssmith/LittleEndianBase128.jl).
 #
 # The MIT License (MIT)
 #
@@ -22,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-module LEB128
+module LittleEndianBase128
 
 export encode, decodesigned, decodeunsigned, decode
 
