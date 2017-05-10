@@ -24,4 +24,4 @@ build_script:
   - C:\projects\julia\bin\julia-debug -e "versioninfo(); Pkg.clone(pwd(), \"LittleEndianBase128\")"
 
 test_script:
-  - C:\projects\julia\bin\julia-debug -e "Pkg.test(\"LEB128\")"
+  - C:\projects\julia\bin\julia-debug -e "Pkg.test(\"LittleEndianBase128\")"
