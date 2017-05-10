@@ -21,7 +21,7 @@ install:
 build_script:
 # Need to convert from shallow to complete for Pkg.clone to work
 #  - git fetch --unshallow
-  - C:\projects\julia\bin\julia-debug -e "versioninfo(); Pkg.clone(pwd(), \"LEB128\")"
+  - C:\projects\julia\bin\julia-debug -e "versioninfo(); Pkg.clone(pwd(), \"LittleEndianBase128\")"
 
 test_script:
   - C:\projects\julia\bin\julia-debug -e "Pkg.test(\"LEB128\")"
