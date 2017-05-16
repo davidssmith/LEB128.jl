@@ -33,6 +33,15 @@ end
 
 const version = v"0.0.1"
 
+"""
+    encode(A::Array{T<:Integer,N})
+
+    Encode an array of integers using Little Endian Base 128 encoding.
+
+    Returns an Array{UInt8,1} no matter what the input, because the 
+    encoding process results in variable length output per element. The
+    original shape of the array will be lost.
+"""
 function encode{T<:Unsigned,N}(input::Array{T,N})
   # Encode array of unsigned integers using LEB128
   maxbytes = ceil(Int, 8*sizeof(T)/ 7)
@@ -61,6 +70,13 @@ encode{T<:Signed}(n::T) = encode(unsigned(xor(n << 1, n >> (8*sizeof(T)-1))))
 
 encode{T<:Signed,N}(input::Array{T,N}) = encode(map(n -> unsigned(xor(n << 1, n >> 63)), input))
 
+"""
+    decodeunsigned(A::Array{UInt8,1}, [dtype=UInt64], [outsize=0])
+
+    Decode LEB128 encoded bytes back into an unsigned array of type `dtype` and size
+    `outsize`. If no outsize is specified, more memory will be required during 
+    the decoding process, but the output will be the correct length. 
+"""
 function decodeunsigned(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=0)
   # Decode unsigned integer using LEB128
   if outsize == 0
@@ -89,12 +105,26 @@ function decodeunsigned(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::
   return output[1:k-1]
 end
 
+"""
+    decodesigned(A::Array{UInt8,1}, [dtype=Int64], [outsize=0])
+
+    Decode LEB128 encoded bytes back into an signed array of type `dtype` and size
+    `outsize`. If no outsize is specified, more memory will be required during
+    the decoding process, but the output will be the correct length.
+"""
 function decodesigned(input::Array{UInt8,1}, dtype::DataType=Int64, outsize::Integer=0)
   n = decodeunsigned(input, dtype, outsize)
   # undo zigzag encoding to retrieve the sign
   return map(x -> dtype(xor(x >>> 1, -(x & 1))), n)
 end
 
+"""
+    decode(A::Array{UInt8,1}, [dtype=UInt64], [outsize=0])
+
+    Decode LEB128 encoded bytes back into an array of type `dtype` and size
+    `outsize`. If no outsize is specified, more memory will be required during
+    the decoding process, but the output will be the correct length.
+"""
 function decode(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=0)
   udtypes = Dict(1 => UInt8, 2 => UInt16, 4 => UInt32, 8 => UInt64, 16 => UInt128)
   if dtype <: Signed
