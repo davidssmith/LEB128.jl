@@ -33,7 +33,7 @@ end
 
 const version = v"0.0.1"
 
-function encode{T<:Unsigned,N}(input::Array{T,N})
+function encode(input::Array{T,N}) where {T <: Unsigned, N} 
   # Encode array of unsigned integers using LEB128
   maxbytes = ceil(Int, 8*sizeof(T)/ 7)
   output = Array{UInt8}(maxbytes*length(input))  # maximum possible length
@@ -55,11 +55,11 @@ function encode{T<:Unsigned,N}(input::Array{T,N})
   return output[1:k-1]
 end
 
-encode{T<:Unsigned}(n::T) = encode([n])
+encode(n::T) where {T<:Unsigned} = encode([n])
 
-encode{T<:Signed}(n::T) = encode(unsigned(xor(n << 1, n >> (8*sizeof(T)-1))))
+encode(n::T) where {T<:Signed} = encode(unsigned(xor(n << 1, n >> (8*sizeof(T)-1))))
 
-encode{T<:Signed,N}(input::Array{T,N}) = encode(map(n -> unsigned(xor(n << 1, n >> 63)), input))
+encode(input::Array{T,N}) where {T<:Signed,N} = encode(map(n -> unsigned(xor(n << 1, n >> 63)), input))
 
 function decodeunsigned(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=0)
   # Decode unsigned integer using LEB128
