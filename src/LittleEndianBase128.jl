@@ -33,6 +33,8 @@ end
 
 const version = v"0.0.1"
 
+movesign{T}(x::T) = signed(xor(x >>> one(T), -(x & one(T))))
+
 function encode{T<:Unsigned,N}(input::Array{T,N})
   # Encode array of unsigned integers using LEB128
   maxbytes = ceil(Int, 8*sizeof(T)/ 7)
@@ -92,7 +94,7 @@ end
 function decodesigned(input::Array{UInt8,1}, dtype::DataType=Int64, outsize::Integer=0)
   n = decodeunsigned(input, dtype, outsize)
   # undo zigzag encoding to retrieve the sign
-  return map(x -> dtype(xor(x >>> 1, -(x & 1))), n)
+  return movesign.(n)
 end
 
 function decode(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=0)
@@ -100,7 +102,7 @@ function decode(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=
   if dtype <: Signed
     udtype = udtypes[sizeof(dtype)]
     n = decodeunsigned(input, udtype, outsize)
-    return map(x -> signed(xor(x >>> 1, -(x & 1))), n)
+    return movesign.(n)
   else
     n = decodeunsigned(input, dtype, outsize)
     return map(dtype, n)
