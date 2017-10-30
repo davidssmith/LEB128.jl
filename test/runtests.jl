@@ -24,10 +24,14 @@ for t in types
   a = typemin(t)
   b = typemax(t)
   print("$t min ... ")
-  @test decode(encode(a),t)[1] == a
+  u = decode(encode(a),t)[1]
+  @test u == a
+  @test typeof(u) == typeof(a)
   println("PASS")
   print("$t max ... ")
-  @test decode(encode(b),t)[1] == b
+  u = decode(encode(b),t)[1]
+  @test u == b
+  @test typeof(u) == typeof(b)
   println("PASS")
   print("$t random $n x $n matrix ...")
   x = rand(a:b, n, n)
