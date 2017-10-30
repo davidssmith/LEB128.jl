@@ -23,10 +23,14 @@ for t in types
   a = typemin(t)
   b = typemax(t)
   print("$t min ... ")
-  @test LittleEndianBase128.decode(LittleEndianBase128.encode(a),t)[1] == a
+  u = LittleEndianBase128.decode(LittleEndianBase128.encode(a),t)[1]
+  @test u == a
+  @test typeof(u) == typeof(a)
   println("PASS")
   print("$t max ... ")
-  @test LittleEndianBase128.decode(LittleEndianBase128.encode(b),t)[1] == b
+  u = LittleEndianBase128.decode(LittleEndianBase128.encode(b),t)[1]
+  @test u == b
+  @test typeof(u) == typeof(b)
   println("PASS")
   print("$t random $n x $n matrix ...")
   x = rand(a:b, n, n)
