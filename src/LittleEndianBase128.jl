@@ -31,7 +31,7 @@ if Base.VERSION < v"0.6-"
   xor(a,b) = a $ b
 end
 
-const version = v"0.0.1"
+const version = v"0.0.2"
 
 movesign{T}(x::T) = signed(xor(x >>> one(T), -(x & one(T))))
 
