@@ -2,7 +2,7 @@
 using Base.Test
 
 include("../src/LittleEndianBase128.jl")
-using LittleEndianBase128
+using .LittleEndianBase128
 
 println("Testing LittleEndianBase128 encoding and decoding.")
 
