@@ -18,7 +18,7 @@ print("Known results ... ")
 println("PASS")
 
 println("Type min and max ...")
-types = [UInt8, UInt16, UInt32, UInt64, UInt64, Int8, Int16, Int32, Int64, Int64]
+types = [UInt8, UInt16, UInt32, UInt64, UInt64, Int8, Int16, Int32, Int64, Int64, Bool]
 n = 3
 for t in types
   a = typemin(t)
