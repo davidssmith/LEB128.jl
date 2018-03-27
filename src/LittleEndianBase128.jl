@@ -33,9 +33,11 @@ if Base.VERSION < v"0.6-"
   xor(a,b) = a $ b
 end
 
-const version = v"0.0.2"
+const version = v"0.0.3"
 
 movesign{T}(x::T) = signed(xor(x >>> one(T), -(x & one(T))))
+
+encode(input::Array{Bool,N}) where N = encode(reinterpret(UInt8, input))
 
 function encode{T<:Unsigned,N}(input::Array{T,N})
   # Encode array of unsigned integers using LEB128
@@ -61,9 +63,12 @@ end
 
 encode{T<:Unsigned}(n::T) = encode([n])
 
+encode(n::Bool) = encode([n])
+
 encode{T<:Signed}(n::T) = encode(unsigned(xor(n << 1, n >> (8*sizeof(T)-1))))
 
 encode{T<:Signed,N}(input::Array{T,N}) = encode(map(n -> unsigned(xor(n << 1, n >> 63)), input))
+
 
 function decodeunsigned(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=0)
   # Decode unsigned integer using LEB128
