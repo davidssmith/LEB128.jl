@@ -31,7 +31,7 @@ const version = v"0.0.3"
 
 movesign(x::T) where T = signed(xor(x >>> one(T), -(x & one(T))))
 
-encode(input::Array{Bool,N}) where N = encode(reinterpret(UInt8, input))
+encode(input::Array{Bool,N}) where N = encode(Array(reinterpret(UInt8, input)))
 
 function encode(input::Array{T,N}) where T<:Unsigned where N
   # Encode array of unsigned integers using LEB128
