@@ -36,7 +36,7 @@ encode(input::Array{Bool,N}) where N = encode(reinterpret(UInt8, input))
 function encode(input::Array{T,N}) where T<:Unsigned where N
   # Encode array of unsigned integers using LEB128
   maxbytes = ceil(Int, 8*sizeof(T)/ 7)
-  output = Array{UInt8}(maxbytes*length(input))  # maximum possible length
+  output = Array{UInt8}(undef, maxbytes*length(input))  # maximum possible length
   k = 1  # position of next write in output array
   for j in 1:length(input)
     if input[j] == 0
@@ -69,7 +69,7 @@ function decodeunsigned(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::
   if outsize == 0
     outsize = length(input) # if don't know, just allocate largest possible array
   end
-  output = Array{dtype}(outsize)
+  output = Array{dtype}(undef, outsize)
   j = 1  # position of next read in input array
   k = 1  # position of current write in output array
   while k <= length(output)
