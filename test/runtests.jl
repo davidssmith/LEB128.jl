@@ -1,5 +1,5 @@
 # test file for LittleEndianBase128.jl
-using Base.Test
+using Test
 
 include("../src/LittleEndianBase128.jl")
 using .LittleEndianBase128
