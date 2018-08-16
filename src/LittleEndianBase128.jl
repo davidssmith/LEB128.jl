@@ -23,23 +23,17 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-__precompile__()
-
 module LittleEndianBase128
 
 export encode, decodesigned, decodeunsigned, decode
 
-if Base.VERSION < v"0.6-"
-  xor(a,b) = a $ b
-end
+const version = v"0.0.3"
 
-const version = v"0.0.2"
-
-movesign{T}(x::T) = signed(xor(x >>> one(T), -(x & one(T))))
+movesign(x::T) where T = signed(xor(x >>> one(T), -(x & one(T))))
 
 encode(input::Array{Bool,N}) where N = encode(reinterpret(UInt8, input))
 
-function encode{T<:Unsigned,N}(input::Array{T,N})
+function encode(input::Array{T,N}) where T<:Unsigned where N
   # Encode array of unsigned integers using LEB128
   maxbytes = ceil(Int, 8*sizeof(T)/ 7)
   output = Array{UInt8}(maxbytes*length(input))  # maximum possible length
@@ -61,13 +55,13 @@ function encode{T<:Unsigned,N}(input::Array{T,N})
   return output[1:k-1]
 end
 
-encode{T<:Unsigned}(n::T) = encode([n])
+encode(n::T) where T<:Unsigned = encode([n])
 
 encode(n::Bool) = encode([n])
 
-encode{T<:Signed}(n::T) = encode(unsigned(xor(n << 1, n >> (8*sizeof(T)-1))))
+encode(n::T) where T<:Signed = encode(unsigned(xor(n << 1, n >> (8*sizeof(T)-1))))
 
-encode{T<:Signed,N}(input::Array{T,N}) = encode(map(n -> unsigned(xor(n << 1, n >> 63)), input))
+encode(input::Array{T,N}) where T<:Signed where N = encode(map(n -> unsigned(xor(n << 1, n >> 63)), input))
 
 
 function decodeunsigned(input::Array{UInt8,1}, dtype::DataType=UInt64, outsize::Integer=0)
