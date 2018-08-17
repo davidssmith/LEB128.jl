@@ -27,7 +27,7 @@ module LittleEndianBase128
 
 export encode, decodesigned, decodeunsigned, decode
 
-const version = v"0.0.3"
+const version = v"0.1.1"
 
 movesign(x::T) where T = signed(xor(x >>> one(T), -(x & one(T))))
 
